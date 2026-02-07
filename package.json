@@ -14,7 +14,10 @@
     "@angular/platform-server": "~21.1.0",
     "@angular/router": "~21.1.0",
     "@angular/ssr": "~21.1.0",
-    "rxjs": "~7.8.0"
+    "istanbul-lib-coverage": "^3.2.2",
+    "istanbul-reports": "^3.2.0",
+    "rxjs": "~7.8.0",
+    "v8-to-istanbul": "^9.3.0"
   },
   "devDependencies": {
     "@angular-devkit/core": "~21.1.0",
@@ -37,9 +40,9 @@
     "@nx/workspace": "22.4.5",
     "@playwright/test": "^1.36.0",
     "@schematics/angular": "~21.1.0",
-    "@swc-node/register": "~1.9.1",
-    "@swc/core": "~1.5.7",
-    "@swc/helpers": "~0.5.11",
+    "@swc-node/register": "1.11.1",
+    "@swc/core": "1.15.11",
+    "@swc/helpers": "0.5.18",
     "@types/node": "20.19.9",
     "@typescript-eslint/utils": "^8.40.0",
     "@vitest/coverage-v8": "^4.0.0",
