@@ -6,7 +6,7 @@ import { unmarshallCoverage } from './utils/attachment.utils';
 import {
   filterCoverageMap,
   generateReports,
-  mapPlaywrightCoverageToIstanbulCoverage,
+  mapReportToMapData,
 } from './utils/coverage-report.utils';
 
 export class CoverageReporter implements Reporter {
@@ -23,7 +23,7 @@ export class CoverageReporter implements Reporter {
 
   onBegin() {
     console.info('Starting coverage reporter...');
-    const outputDir = process.cwd() + this.#options.outputDir;
+    const outputDir = `${this.#options.projectRoot}/${this.#options.outputDir}`;
     if (existsSync(outputDir)) {
       rmSync(outputDir, { recursive: true, force: true });
     }
@@ -31,14 +31,11 @@ export class CoverageReporter implements Reporter {
   }
 
   async onTestEnd(test: TestCase, result: TestResult) {
-    if (result.status !== 'failed' && result.attachments) {
+    if (result.attachments) {
       try {
         const coverageReport = unmarshallCoverage(result.attachments);
-        const coverageMap = await mapPlaywrightCoverageToIstanbulCoverage(
-          coverageReport,
-          this.#options,
-        );
-        coverageMap.forEach(map => this.#coverageMap.merge(map));
+        const coverageMapData = await mapReportToMapData(coverageReport, this.#options);
+        coverageMapData.forEach(map => this.#coverageMap.merge(map));
       } catch (error) {
         console.error(`Failed to process coverage data for "${test.title}" :`, error);
       }

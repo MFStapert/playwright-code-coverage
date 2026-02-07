@@ -1,6 +1,6 @@
 import { workspaceRoot } from '@nx/devkit';
 import { nxE2EPreset } from '@nx/playwright/preset';
-import { COVERAGE_REPORTER_NX_ANGULAR_PRESET } from '@playwright/coverage-reporter';
+import { COVERAGE_REPORTER_ANGULAR_PRESET } from '@playwright/coverage-reporter';
 import { defineConfig, devices } from '@playwright/test';
 
 // For CI, you may want to set BASE_URL to the deployed application.
@@ -29,8 +29,9 @@ export default defineConfig({
     [
       '../../libs/playwright-coverage-reporter/src/coverage-reporter.ts',
       {
-        ...COVERAGE_REPORTER_NX_ANGULAR_PRESET,
-        includePatterns: ['apps/angular-client-app'],
+        ...COVERAGE_REPORTER_ANGULAR_PRESET,
+        projectRoot: workspaceRoot,
+        includePatterns: ['**/apps/angular-client-app/**/*.ts'],
       },
     ],
   ],

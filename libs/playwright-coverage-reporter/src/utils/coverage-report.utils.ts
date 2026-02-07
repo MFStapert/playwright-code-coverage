@@ -7,46 +7,63 @@ import v8toIstanbul from 'v8-to-istanbul';
 import { CoverageReporterConfig } from '../config';
 import { CoverageReport } from '../types';
 
-const urlToPath = (url: string, options: CoverageReporterConfig): string => {
-  if (url.startsWith(options.serverUrl)) {
-    const urlObj = new URL(url);
-    const { pathname } = urlObj;
-    return join(process.cwd(), pathname);
-  }
-
-  return url;
+// Used to exclude files from remote servers
+const isServerUrl = (url: string, config: CoverageReporterConfig): boolean => {
+  return url.startsWith(config.serverUrl);
 };
 
-export const mapPlaywrightCoverageToIstanbulCoverage = async (
-  coverageEntries: Array<CoverageReport>,
-  options: CoverageReporterConfig,
+// Files from local server that start with @fs can't be mapped to source files
+const isFsPath = (path: string): boolean => {
+  return path.indexOf('@fs') > 0;
+};
+
+// Maps script urls from playwright report to local file paths
+const urlToPath = (url: string, config: CoverageReporterConfig): string => {
+  const urlObj = new URL(url);
+  const { pathname } = urlObj;
+
+  return join(config.projectRoot, pathname);
+};
+
+const mapPlaywrightCoverageToIstanbul = async (
+  entry: CoverageReport,
+  config: CoverageReporterConfig,
+): Promise<CoverageMapData | null> => {
+  if (
+    isFsPath(entry.url) ||
+    !isServerUrl(entry.url, config) ||
+    !entry.source ||
+    entry.functions.length === 0
+  ) {
+    return null;
+  }
+  const filePath = urlToPath(entry.url, config);
+  const converter = v8toIstanbul(filePath, 0, entry.source ? { source: entry.source } : undefined);
+  await converter.load();
+  converter.applyCoverage(entry.functions);
+
+  return converter.toIstanbul();
+};
+
+export const mapReportToMapData = async (
+  coverageReports: Array<CoverageReport>,
+  config: CoverageReporterConfig,
 ): Promise<Array<CoverageMapData>> => {
   const istanbulCoverage = await Promise.all(
-    coverageEntries.map(async entry => {
-      if (entry.url.startsWith(options.serverUrl)) {
-        const filePath = urlToPath(entry.url, options);
-        const converter = v8toIstanbul(
-          filePath,
-          0,
-          entry.source ? { source: entry.source } : undefined,
-        );
-        await converter.load();
-        converter.applyCoverage(entry.functions);
-
-        return converter.toIstanbul();
-      }
-      return null;
-    }),
+    coverageReports.map(async entry => mapPlaywrightCoverageToIstanbul(entry, config)),
   );
   return istanbulCoverage.filter(mappedData => mappedData !== null);
 };
 
-export const filterCoverageMap = (coverageMap: CoverageMap, options: CoverageReporterConfig) => {
+export const filterCoverageMap = (
+  coverageMap: CoverageMap,
+  config: CoverageReporterConfig,
+): CoverageMap => {
   const filteredCoverage = libCoverage.createCoverageMap();
   coverageMap.files().forEach(filePath => {
-    const isIncluded = options.includePatterns.some(pattern => minimatch(filePath, pattern));
+    const isIncluded = config.includePatterns.some(pattern => minimatch(filePath, pattern));
 
-    const isExcluded = options.excludePatterns.some(pattern => minimatch(filePath, pattern));
+    const isExcluded = config.excludePatterns.some(pattern => minimatch(filePath, pattern));
 
     if (isIncluded && !isExcluded) {
       filteredCoverage.addFileCoverage(coverageMap.fileCoverageFor(filePath));
@@ -55,23 +72,15 @@ export const filterCoverageMap = (coverageMap: CoverageMap, options: CoverageRep
   return filteredCoverage;
 };
 
-export const generateReports = (coverageMap: CoverageMap, options: CoverageReporterConfig) => {
+export const generateReports = (coverageMap: CoverageMap, config: CoverageReporterConfig): void => {
   const context = libReport.createContext({
-    dir: process.cwd() + options.outputDir,
+    dir: `${config.projectRoot}/${config.outputDir}`,
     coverageMap,
-    watermarks: {
-      statements: [50, 80],
-      functions: [50, 80],
-      branches: [50, 80],
-      lines: [50, 80],
-    },
   });
 
-  options.reporters.forEach(reportType => {
+  config.reporters.forEach(reportType => {
     const report = reports.create(reportType, {
-      skipEmpty: false,
-      skipFull: false,
-      projectRoot: process.cwd(),
+      projectRoot: config.projectRoot,
     });
 
     report.execute(context);
