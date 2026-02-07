@@ -1,0 +1,33 @@
+{
+  "name": "playwright-coverage-reporter",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/playwright-coverage-reporter/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "manifestRootsToUpdate": ["dist/{projectRoot}"],
+      "currentVersionResolver": "git-tag",
+      "fallbackCurrentVersionResolver": "disk"
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/playwright-coverage-reporter",
+        "main": "libs/playwright-coverage-reporter/src/index.ts",
+        "tsConfig": "libs/playwright-coverage-reporter/tsconfig.lib.json",
+        "assets": ["libs/playwright-coverage-reporter/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    }
+  }
+}
