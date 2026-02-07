@@ -10,7 +10,6 @@
       "fallbackCurrentVersionResolver": "disk"
     }
   },
-  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",

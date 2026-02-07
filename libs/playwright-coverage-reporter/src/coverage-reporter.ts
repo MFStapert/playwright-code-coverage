@@ -42,7 +42,7 @@ export class CoverageReporter implements Reporter {
     }
   }
 
-  async onExit() {
+  async onEnd() {
     const filteredCoverageMap = filterCoverageMap(this.#coverageMap, this.#options);
     generateReports(filteredCoverageMap, this.#options);
     console.info('Coverage reports generated...');
