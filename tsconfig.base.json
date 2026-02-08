@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@playwright/coverage-reporter": ["libs/playwright-coverage-reporter/src/index.ts"]
+      "playwright-code-coverage": ["libs/playwright-code-coverage/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
