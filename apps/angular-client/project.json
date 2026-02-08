@@ -1,9 +1,9 @@
 {
-  "name": "angular-server-app",
+  "name": "angular-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "server",
-  "sourceRoot": "apps/angular-server-app/src",
+  "prefix": "client",
+  "sourceRoot": "apps/angular-client/src",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint"
@@ -12,14 +12,9 @@
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/angular-server-app",
-        "browser": "apps/angular-server-app/src/main.ts",
-        "tsConfig": "apps/angular-server-app/tsconfig.app.json",
-        "server": "apps/angular-server-app/src/main.server.ts",
-        "ssr": {
-          "entry": "apps/angular-server-app/src/server.ts"
-        },
-        "outputMode": "server",
+        "outputPath": "dist/apps/angular-client",
+        "browser": "apps/angular-client/src/main.ts",
+        "tsConfig": "apps/angular-client/tsconfig.app.json",
         "optimization": false,
         "extractLicenses": false,
         "sourceMap": true
@@ -29,17 +24,16 @@
       "continuous": true,
       "executor": "@angular/build:dev-server",
       "options": {
-        "buildTarget": "angular-server-app:build",
-        "port": 4200
+        "buildTarget": "angular-client:build"
       }
     },
     "serve-static": {
       "continuous": true,
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "angular-server-app:build",
+        "buildTarget": "angular-client:build",
         "port": 4200,
-        "staticFilePath": "dist/apps/angular-server-app/browser",
+        "staticFilePath": "dist/apps/angular-client/browser",
         "spa": true
       }
     }

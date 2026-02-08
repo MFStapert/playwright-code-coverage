@@ -10,7 +10,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npx nx run angular-server-app:serve',
+    command: 'npx nx run angular-client:serve',
     url: 'http://localhost:4200',
     reuseExistingServer: true,
     cwd: workspaceRoot,
@@ -28,7 +28,7 @@ export default defineConfig({
       {
         ...COVERAGE_REPORTER_ANGULAR_PRESET,
         projectRoot: workspaceRoot,
-        includePatterns: ['**/apps/angular-server-app/**/*.ts'],
+        includePatterns: ['**/apps/angular-client/**/*.ts'],
       },
     ],
   ],
