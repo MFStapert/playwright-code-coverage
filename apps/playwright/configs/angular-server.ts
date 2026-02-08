@@ -3,12 +3,10 @@ import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig, devices } from '@playwright/test';
 import { COVERAGE_REPORTER_ANGULAR_PRESET } from 'playwright-code-coverage';
 
-const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
-
 export default defineConfig({
-  ...nxE2EPreset(__filename, { testDir: './src' }),
+  ...nxE2EPreset(__filename, { testDir: '../src' }),
   use: {
-    baseURL,
+    baseURL: 'http://localhost:4200',
     trace: 'on-first-retry',
   },
   webServer: {
@@ -26,11 +24,11 @@ export default defineConfig({
   reporter: [
     ['list'],
     [
-      '../../libs/playwright-code-coverage/src/coverage-reporter.ts',
+      '../../../libs/playwright-code-coverage/src/coverage-reporter.ts',
       {
         ...COVERAGE_REPORTER_ANGULAR_PRESET,
         projectRoot: workspaceRoot,
-        includePatterns: ['**/apps/angular-client-app/**/*.ts'],
+        includePatterns: ['**/apps/angular-server-app/**/*.ts'],
       },
     ],
   ],

@@ -9,7 +9,7 @@ export type CoverageReporterConfig = {
   reporters: Array<ReportType>;
 };
 export const COVERAGE_REPORTER_ANGULAR_PRESET: Partial<CoverageReporterConfig> = {
-  outputDir: 'coverage/playwright-coverage-reporter',
+  outputDir: 'coverage/playwright-code-coverage',
   serverUrl: 'http://localhost:4200',
   includePatterns: ['**/*.ts'],
   excludePatterns: [],
