@@ -1,9 +1,8 @@
 import { workspaceRoot } from '@nx/devkit';
 import { nxE2EPreset } from '@nx/playwright/preset';
-import { COVERAGE_REPORTER_ANGULAR_PRESET } from '@playwright/coverage-reporter';
 import { defineConfig, devices } from '@playwright/test';
+import { COVERAGE_REPORTER_ANGULAR_PRESET } from 'playwright-code-coverage';
 
-// For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
 
 export default defineConfig({
@@ -27,7 +26,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     [
-      '../../libs/playwright-coverage-reporter/src/coverage-reporter.ts',
+      '../../libs/playwright-code-coverage/src/coverage-reporter.ts',
       {
         ...COVERAGE_REPORTER_ANGULAR_PRESET,
         projectRoot: workspaceRoot,

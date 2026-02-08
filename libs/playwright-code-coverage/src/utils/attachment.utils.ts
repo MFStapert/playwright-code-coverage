@@ -1,4 +1,4 @@
-import { Attachment, CoverageReport } from '../types';
+import { Attachment, CoverageReport } from '../models';
 
 export const coverageFileKey = 'coverage';
 

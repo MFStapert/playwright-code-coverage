@@ -1,8 +1,9 @@
 {
-  "name": "playwright-coverage-reporter",
-  "version": "0.0.3",
+  "name": "playwright-code-coverage",
+  "version": "0.0.1",
   "type": "module",
   "main": "./index.js",
+  "types": "./index.d.ts",
   "peerDependencies": {
     "@playwright/test": "^1.36.0"
   },

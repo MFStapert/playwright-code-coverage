@@ -1,5 +1,5 @@
 {
-  "name": "@playwright-coverage-reporter/source",
+  "name": "playwright-code-coverage/root",
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "targets": {
     "local-registry": {

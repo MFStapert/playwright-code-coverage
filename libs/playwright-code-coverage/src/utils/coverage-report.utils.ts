@@ -5,7 +5,7 @@ import { minimatch } from 'minimatch';
 import { join } from 'path';
 import v8toIstanbul from 'v8-to-istanbul';
 import { CoverageReporterConfig } from '../config';
-import { CoverageReport } from '../types';
+import { CoverageReport } from '../models';
 
 // Used to exclude files from remote servers
 const isServerUrl = (url: string, config: CoverageReporterConfig): boolean => {
@@ -18,7 +18,7 @@ const isFsPath = (path: string): boolean => {
 };
 
 // Maps script urls from playwright report to local file paths
-const urlToPath = (url: string, config: CoverageReporterConfig): string => {
+const mapUrlToPath = (url: string, config: CoverageReporterConfig): string => {
   const urlObj = new URL(url);
   const { pathname } = urlObj;
 
@@ -37,7 +37,7 @@ const mapPlaywrightCoverageToIstanbul = async (
   ) {
     return null;
   }
-  const filePath = urlToPath(entry.url, config);
+  const filePath = mapUrlToPath(entry.url, config);
   const converter = v8toIstanbul(filePath, 0, entry.source ? { source: entry.source } : undefined);
   await converter.load();
   converter.applyCoverage(entry.functions);

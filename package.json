@@ -1,9 +1,9 @@
 {
-  "name": "@playwright-coverage-reporter/source",
+  "name": "playwright-code-coverage",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
   "private": true,
+  "scripts": {},
   "dependencies": {
     "@angular-devkit/build-angular": "~21.1.0",
     "@angular/common": "~21.1.0",
