@@ -1,7 +1,7 @@
 {
   "name": "playwright-coverage-reporter",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/playwright-coverage-reporter/src",
+  "sourceRoot": "libs/playwright-coverage-reporter",
   "projectType": "library",
   "release": {
     "version": {
@@ -19,7 +19,7 @@
         "main": "libs/playwright-coverage-reporter/src/index.ts",
         "tsConfig": "libs/playwright-coverage-reporter/tsconfig.lib.json",
         "assets": ["libs/playwright-coverage-reporter/*.md"],
-        "format": ["cjs"],
+        "format": ["esm"],
         "generatePackageJson": true
       }
     },
