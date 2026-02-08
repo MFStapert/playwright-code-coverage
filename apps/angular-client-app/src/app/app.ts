@@ -4,8 +4,6 @@ import { RouterModule } from '@angular/router';
 @Component({
   imports: [RouterModule],
   selector: 'client-root',
-  template: `<h1>Welcome angular-client-app</h1>
-    <router-outlet></router-outlet>`,
-  styles: ``,
+  template: `<h1>Welcome angular-client-app</h1> `,
 })
 export class App {}
