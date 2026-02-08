@@ -4,14 +4,21 @@
   "projectType": "application",
   "sourceRoot": "apps/playwright/src",
   "targets": {
-    "e2e:client": {
+    "angular:client": {
       "executor": "@nx/playwright:playwright",
       "options": {
         "config": "apps/playwright/configs/angular-client.ts",
         "skipInstall": true
       }
     },
-    "e2e:server": {
+    "angular:client-bundled": {
+      "executor": "@nx/playwright:playwright",
+      "options": {
+        "config": "apps/playwright/configs/angular-client-bundled.ts",
+        "skipInstall": true
+      }
+    },
+    "angular:server": {
       "executor": "@nx/playwright:playwright",
       "options": {
         "config": "apps/playwright/configs/angular-server.ts",
