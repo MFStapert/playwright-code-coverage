@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "lint": "nx run-many --target=lint --all --parallel",
+    "build": "nx run-many --target=build --all --parallel"
+  },
   "dependencies": {
     "@angular-devkit/build-angular": "~21.1.0",
     "@angular/common": "~21.1.0",
