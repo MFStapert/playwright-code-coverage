@@ -1,12 +1,11 @@
 import { workspaceRoot } from '@nx/devkit';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
-import { COVERAGE_REPORTER_ANGULAR_PRESET } from 'playwright-code-coverage';
+import { COVERAGE_REPORTER_ANGULAR_PRESET, CoverageReporterConfig } from 'playwright-code-coverage';
 
 export function createPlaywrightConfig(
   serveCommand: string,
-  includePatterns: string[],
-  sourceMapLocation?: string,
+  config: Partial<CoverageReporterConfig>,
 ): PlaywrightTestConfig {
   return defineConfig({
     ...nxE2EPreset(__filename, { testDir: '../src' }),
@@ -32,9 +31,8 @@ export function createPlaywrightConfig(
         '../../../libs/playwright-code-coverage/src/coverage-reporter.ts',
         {
           ...COVERAGE_REPORTER_ANGULAR_PRESET,
+          ...config,
           projectRoot: workspaceRoot,
-          includePatterns: includePatterns,
-          sourceMapLocation: sourceMapLocation,
         },
       ],
     ],

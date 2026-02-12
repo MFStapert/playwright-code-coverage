@@ -4,8 +4,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "clean": "rm -rf .angular .nx coverage dist node_modules tmp",
     "lint": "nx run-many --target=lint --all --parallel",
-    "build": "nx run-many --target=build --all --parallel"
+    "build": "nx run-many --target=build --all --parallel",
+    "test": "node test.js"
   },
   "dependencies": {
     "@angular-devkit/build-angular": "~21.1.0",
