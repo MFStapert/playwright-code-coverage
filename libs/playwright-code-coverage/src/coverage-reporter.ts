@@ -6,7 +6,7 @@ import { unmarshallCoverage } from './utils/attachment.utils';
 import {
   filterCoverageMap,
   generateReports,
-  mapReportToMapData,
+  mapReportsToMapData,
 } from './utils/coverage-report.utils';
 
 export class CoverageReporter implements Reporter {
@@ -34,7 +34,7 @@ export class CoverageReporter implements Reporter {
     if (result.attachments) {
       try {
         const coverageReport = unmarshallCoverage(result.attachments);
-        const coverageMapData = await mapReportToMapData(coverageReport, this.#options);
+        const coverageMapData = await mapReportsToMapData(coverageReport, this.#options);
         coverageMapData.forEach(map => this.#coverageMap.merge(map));
       } catch (error) {
         console.error(`Failed to process coverage data for "${test.title}" :`, error);

@@ -28,7 +28,7 @@ export default defineConfig({
       {
         ...COVERAGE_REPORTER_ANGULAR_PRESET,
         projectRoot: workspaceRoot,
-        sourceMapLocation: 'dist/apps/angular-client/browser',
+        bundleLocation: 'dist/apps/angular-client/browser',
         includePatterns: ['**/apps/angular-client/**/*.ts'],
       },
     ],

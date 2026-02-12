@@ -7,45 +7,85 @@ import v8toIstanbul from 'v8-to-istanbul';
 import { CoverageReporterConfig } from '../config';
 import { CoverageReport } from '../models';
 
-// Used to exclude files from remote servers
-const isServerUrl = (url: string, config: CoverageReporterConfig): boolean => {
-  return url.startsWith(config.serverUrl);
+const isBaseURL = (url: string, config: CoverageReporterConfig): boolean => {
+  return url.startsWith(config.baseURL);
 };
 
-// Files from local server that start with @fs can't be mapped to source files
 const isFsPath = (path: string): boolean => {
+  // Not source files in angular, pain to map
   return path.indexOf('@fs') > 0;
 };
 
-// Maps script urls from playwright report to local file paths
-const mapUrlToPath = (url: string, config: CoverageReporterConfig): string => {
-  const urlObj = new URL(url);
-  const { pathname } = urlObj;
-
-  return join(config.projectRoot, pathname);
+// Only map in case of "bundled angular app"
+// Bundled js in this mode does not contain inline sourcemaps
+// So we need this for v8ToIstanbull to handle path resolution
+const mapCoverageReportToScriptPath = (
+  coverageReport: CoverageReport,
+  config: CoverageReporterConfig,
+): string => {
+  if (config.bundleLocation) {
+    const urlObj = new URL(coverageReport.url);
+    const { pathname } = urlObj;
+    return join(`${config.projectRoot}/${config.bundleLocation}`, pathname);
+  } else {
+    return coverageReport.url;
+  }
 };
 
 const mapPlaywrightCoverageToIstanbul = async (
-  entry: CoverageReport,
+  coverageReport: CoverageReport,
   config: CoverageReporterConfig,
 ): Promise<CoverageMapData | null> => {
   if (
-    isFsPath(entry.url) ||
-    !isServerUrl(entry.url, config) ||
-    !entry.source ||
-    entry.functions.length === 0
+    isFsPath(coverageReport.url) ||
+    !isBaseURL(coverageReport.url, config) ||
+    !coverageReport.source ||
+    !(coverageReport.functions.length > 0)
   ) {
     return null;
   }
-  const filePath = mapUrlToPath(entry.url, config);
-  const converter = v8toIstanbul(filePath, 0, entry.source ? { source: entry.source } : undefined);
+  const converter = v8toIstanbul(
+    mapCoverageReportToScriptPath(coverageReport, config),
+    0,
+    coverageReport.source ? { source: coverageReport.source } : undefined,
+  );
   await converter.load();
-  converter.applyCoverage(entry.functions);
+  converter.applyCoverage(coverageReport.functions);
 
-  return converter.toIstanbul();
+  return postProcessIstanbulCoverMap(converter.toIstanbul(), config);
 };
 
-export const mapReportToMapData = async (
+const postProcessIstanbulCoverMap = (
+  coverageMapData: CoverageMapData,
+  config: CoverageReporterConfig,
+): CoverageMapData => {
+  const newCoverMapData = {} as CoverageMapData;
+  Object.entries(coverageMapData).forEach(entries => {
+    const [key, entry] = entries;
+    let newKey;
+    if (config.bundleLocation) {
+      newKey = key.replace(`/${config.bundleLocation}`, '');
+    } else {
+      const doubleSlashRemoved = config.baseURL.replace('//', '/');
+      newKey = key.replace(`/${doubleSlashRemoved}`, '');
+    }
+
+    newCoverMapData[newKey] = entry;
+  });
+
+  Object.values(coverageMapData).forEach(coverage => {
+    if (config.bundleLocation) {
+      coverage.path = coverage.path.replace(`/${config.bundleLocation}`, '');
+      return;
+    }
+    const doubleSlashRemoved = config.baseURL.replace('//', '/');
+    coverage.path = coverage.path.replace(`/${doubleSlashRemoved}`, '');
+  });
+
+  return newCoverMapData;
+};
+
+export const mapReportsToMapData = async (
   coverageReports: Array<CoverageReport>,
   config: CoverageReporterConfig,
 ): Promise<Array<CoverageMapData>> => {
