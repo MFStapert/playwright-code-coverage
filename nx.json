@@ -48,14 +48,19 @@
       "options": {
         "targetName": "lint"
       }
+    },
+    {
+      "plugin": "@nx/rollup/plugin",
+      "options": {
+        "buildTargetName": "build"
+      }
     }
   ],
   "generators": {
     "@nx/angular:application": {
       "e2eTestRunner": "playwright",
       "linter": "eslint",
-      "style": "css",
-      "unitTestRunner": "vitest-angular"
+      "style": "css"
     }
   },
   "release": {
