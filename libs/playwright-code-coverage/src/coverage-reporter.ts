@@ -4,7 +4,11 @@ import libCoverage, { CoverageMapData } from 'istanbul-lib-coverage';
 import { ReportType } from 'istanbul-reports';
 import { CoverageReporterConfig } from './config';
 import { unmarshallCoverage } from './utils/attachment.utils';
-import { filterCoverageMap, generateReports, mapReportsToMapData } from './utils/coverage-report.utils';
+import {
+  filterCoverageMap,
+  generateReports,
+  mapReportsToMapData,
+} from './utils/coverage-report.utils';
 
 export class CoverageReporter implements Reporter {
   readonly #coverageMap = libCoverage.createCoverageMap();
