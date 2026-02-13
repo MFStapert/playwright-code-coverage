@@ -8,7 +8,9 @@ export type CoverageReporterConfig = {
   includePatterns: Array<string>;
   excludePatterns: Array<string>;
   reporters: Array<ReportType>;
+  debug?: boolean;
 };
+
 export const COVERAGE_REPORTER_ANGULAR_PRESET: Partial<CoverageReporterConfig> = {
   outputDir: 'coverage/playwright-code-coverage',
   baseURL: 'http://localhost:4200',
