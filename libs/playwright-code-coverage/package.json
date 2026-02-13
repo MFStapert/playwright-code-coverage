@@ -4,6 +4,9 @@
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "peerDependencies": {
     "@playwright/test": "^1.36.0"
   },
