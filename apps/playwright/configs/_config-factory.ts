@@ -33,6 +33,7 @@ export function createPlaywrightConfig(
           ...COVERAGE_REPORTER_ANGULAR_PRESET,
           ...config,
           projectRoot: workspaceRoot,
+          debug: true,
         },
       ],
     ],
