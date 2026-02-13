@@ -8,6 +8,7 @@ import {
   filterCoverageMap,
   generateReports,
   mapReportsToMapData,
+  postProcessIstanbulCoverMap,
 } from './utils/coverage-report.utils';
 
 export class CoverageReporter implements Reporter {
@@ -75,7 +76,10 @@ export class CoverageReporter implements Reporter {
       try {
         const coverageReport = unmarshallCoverage(result.attachments);
         const coverageMapData = await mapReportsToMapData(coverageReport, this.#config);
-        coverageMapData.forEach((map: CoverageMapData) => this.#coverageMap.merge(map));
+        coverageMapData.forEach((map: CoverageMapData) => {
+          const postProcessedCoverageMap = postProcessIstanbulCoverMap(map, this.#config);
+          this.#coverageMap.merge(postProcessedCoverageMap);
+        });
       } catch (error) {
         console.error(`Failed to process coverage data for "${test.title}" :`, error);
       }

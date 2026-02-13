@@ -52,10 +52,20 @@ const mapPlaywrightCoverageToIstanbul = async (
   await converter.load();
   converter.applyCoverage(coverageReport.functions);
 
-  return postProcessIstanbulCoverMap(converter.toIstanbul(), config);
+  return converter.toIstanbul();
 };
 
-const postProcessIstanbulCoverMap = (
+export const mapReportsToMapData = async (
+  coverageReports: Array<CoverageReport>,
+  config: CoverageReporterConfig,
+): Promise<Array<CoverageMapData>> => {
+  const istanbulCoverage = await Promise.all(
+    coverageReports.map(async entry => mapPlaywrightCoverageToIstanbul(entry, config)),
+  );
+  return istanbulCoverage.filter(mappedData => mappedData !== null);
+};
+
+export const postProcessIstanbulCoverMap = (
   coverageMapData: CoverageMapData,
   config: CoverageReporterConfig,
 ): CoverageMapData => {
@@ -83,16 +93,6 @@ const postProcessIstanbulCoverMap = (
   });
 
   return newCoverMapData;
-};
-
-export const mapReportsToMapData = async (
-  coverageReports: Array<CoverageReport>,
-  config: CoverageReporterConfig,
-): Promise<Array<CoverageMapData>> => {
-  const istanbulCoverage = await Promise.all(
-    coverageReports.map(async entry => mapPlaywrightCoverageToIstanbul(entry, config)),
-  );
-  return istanbulCoverage.filter(mappedData => mappedData !== null);
 };
 
 export const filterCoverageMap = (
