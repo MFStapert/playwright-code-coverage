@@ -1,9 +1,6 @@
 {
   "name": "playwright-code-coverage",
-  "version": "0.0.1",
-  "type": "module",
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "version": "0.0.0",
   "engines": {
     "node": ">=20.0.0"
   },

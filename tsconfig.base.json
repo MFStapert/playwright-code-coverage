@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "playwright-code-coverage": ["libs/playwright-code-coverage/index.ts"]
+      "playwright-code-coverage": ["libs/playwright-code-coverage/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

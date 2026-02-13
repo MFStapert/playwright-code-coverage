@@ -6,7 +6,7 @@ module.exports = withNx(
     main: './src/index.ts',
     outputPath: '../../dist/libs/playwright-code-coverage',
     tsConfig: './tsconfig.lib.json',
-    compiler: 'swc',
+    compiler: 'tsc',
     format: ['esm']
   },
 );

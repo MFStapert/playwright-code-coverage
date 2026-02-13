@@ -3,18 +3,9 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "importHelpers": false,
     "outDir": "../../dist/out-tsc",
-    "sourceRoot": ".",
-    "types": ["node"]
+    "types": ["node"],
+    "target": "esnext"
   },
-  "include": ["index.ts", "src/**/*.ts"],
-  "exclude": [
-    "vite.config.ts",
-    "vite.config.mts",
-    "src/**/*.spec.ts",
-    "src/**/*.spec.tsx",
-    "src/**/*.spec.js",
-    "src/**/*.spec.jsx"
-  ]
+  "include": ["src/**/*.ts"]
 }
