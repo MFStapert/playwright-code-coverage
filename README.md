@@ -1,6 +1,6 @@
 # Playwright Code coverage
 
-Monorepo for `playwright code coverage`, a reporter library for generating code coverage reports.
+Monorepo for `playwright code coverage`, a library for generating Istanbul code coverage reports from Playwright tests.
 
 ## Library usage
 
@@ -12,8 +12,8 @@ Playwright can generate code coverage reports for Chromium-based browsers.
 There are 3 main issues preventing this from being an out-of-the-box solution:
 
 - Coverage reports aren't aggregated across multiple runs.
-- Code coverage reports are in V8 format, which is not supported by most code coverage tools.
-- You can't directly map the generated V8 coverage to the original source code.
+- Code coverage reports are in v8 format, which is not supported by most code coverage tools.
+- You can't directly map the generated v8 coverage to the original source code.
 
 This library aims to solve these issues:
 
@@ -23,9 +23,9 @@ This library uses a Playwright reporter to store coverage data in memory using t
 To pass data to this reporter, we use the testInfo property to attach the v8CoverageReport as a file.
 The reporter then converts the coverage and merges it with the existing coverageMap.
 
-### Converting the V8 coverage to Istanbul coverage format
+### Converting the v8 coverage to Istanbul coverage format
 
-This library uses the `v8toIstanbul` library to convert the V8 coverage to Istanbul coverage format.
+This library uses the `v8toIstanbul` library to convert the v8 coverage to Istanbul coverage format.
 Some filtering is applied beforehand, like remote URLs and certain framework URLs being excluded.
 There are some quirks when dealing with `v8toIstanbul`; since this library tries to resolve source maps when called.
 Certain dev servers like Angular generate inline source maps which don't need to be resolved.
@@ -45,17 +45,8 @@ In the `apps` folder, there are multiple frontend projects to test the library a
 There is a Verdaccio app for locally publishing the library.
 Currently, the library only has an e2e test; `npm run test` will run the library against all tested frontend projects and compare generated coverage.
 
-## Todos
-
-- Commit lint
-- GitHub releases
-- Check format in CI
-- Dependabot config
-- Add unit test setup
-- Add additional frameworks for testing
-
 ## Resources used
 
 - [Playwright code coverage](https://playwright.dev/docs/api/class-coverage)
 - [Playwright reporters](https://playwright.dev/docs/test-reporters)
-- [Similar lib by bgotink](https://github.com/bgotink/playwright-coverage)
+- [A similar lib by bgotink](https://github.com/bgotink/playwright-coverage)
