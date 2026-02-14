@@ -1,12 +1,12 @@
 # Playwright code coverage
 
-Generate istanbul code coverage reports for Playwright tests.
+Generate Istanbul code coverage reports for Playwright tests.
 
 ## Prerequisites
 
 - Playwright version >= 1.40.0
-- Sourcemaps enabled for dev server/bundle
-- Tests are rand with a chromium-based browser
+- Source maps enabled for dev server/bundle
+- Tests are run with a Chromium-based browser
 
 ## Usage
 
@@ -37,7 +37,7 @@ export default defineConfig({
 
 ### Instrument your tests:
 
-To enable code coverage for tests you need to use the `testWithCoverage` fixture instead of the regular `test` fixture.
+To enable code coverage for tests, you need to use the testWithCoverage fixture instead of the regular test fixture:
 
 ```typescript
 import { expect } from '@playwright/test';
@@ -50,13 +50,13 @@ test('has title', async ({ page }) => {
 });
 ```
 
-You can also [extend](https://playwright.dev/docs/test-fixtures#creating-a-fixture) this fixture or [merge]() it.
+You can also [extend](https://playwright.dev/docs/test-fixtures#creating-a-fixture) this fixture or [merge](https://playwright.dev/docs/test-fixtures#combine-custom-fixtures-from-multiple-modules) it.
 
 ### Generate coverage report:
 
 Code coverage is generated after each test command is finished and written to the configured output directory (default: `coverage/playwright-code-coverage`).
 
-Default output format is `lcov` but can be configured to use any format supported by `istanbul-reports` like:
+The default output format is `lcov` but can be configured to use any format supported by `istanbul-reports` such as:
 
 - `clover`
 - `html`
@@ -65,10 +65,10 @@ Default output format is `lcov` but can be configured to use any format supporte
 
 ## Supported frameworks
 
-In theory this library works with any framework that uses sourcemaps.
+In theory, this library works with any framework that uses sourcemaps.
 However, only the following frameworks have currently been tested:
 
-- `angular 21`
+- `Angular 21`
 
 ## Configuration
 
@@ -80,14 +80,14 @@ However, only the following frameworks have currently been tested:
 | `outputDir`       | Folder to write the coverage report to                              | `coverage/playwright-code-coverage`                 |
 | `baseURL`         | URL on which the application lives                                  | `http://localhost:4200`                             |
 | `bundleLocation`  | Location of the bundle folder on disk                               | None, required when testing with static file server |
-| `includePatterns` | glob patterns for including files in coverage report                | `['**/*.ts', '**/*.tsx']`                           |
-| `excludePatterns` | glob patterns for excluding files in coverage report                | `[]`                                                |
+| `includePatterns` | Glob patterns for including files in coverage report                | `['**/*.ts', '**/*.tsx']`                           |
+| `excludePatterns` | Glob patterns for excluding files in coverage report                | `[]`                                                |
 | `reporters`       | reporters from `istanbul-reports` executed at the end of test suite | `['lcov']`                                          |
-| `debug`           | Prints config at start when set                                     | false                                               |
+| `debug`           | Prints config at start when set                                     | `false`                                             |
 
 ### Configuration examples
 
-#### Standard angular app - dev server
+#### Standard Angular app - dev server
 
 ```typescript
 import { defineCoverageReporterConfig } from 'playwright-code-coverage';
@@ -97,7 +97,7 @@ defineCoverageReporterConfig({
 });
 ```
 
-#### Standard angular app - static file server
+#### Standard Angular app - static file server
 
 ```typescript
 import { defineCoverageReporterConfig } from 'playwright-code-coverage';
