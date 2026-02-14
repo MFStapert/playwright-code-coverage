@@ -56,9 +56,9 @@ const mapPlaywrightCoverageToIstanbul = async (
 };
 
 export const mapReportsToMapData = async (
-  coverageReports: Array<CoverageReport>,
+  coverageReports: CoverageReport[],
   config: CoverageReporterConfig,
-): Promise<Array<CoverageMapData>> => {
+): Promise<CoverageMapData[]> => {
   const istanbulCoverage = await Promise.all(
     coverageReports.map(async entry => mapPlaywrightCoverageToIstanbul(entry, config)),
   );

@@ -1,7 +1,7 @@
 import { workspaceRoot } from '@nx/devkit';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
-import { COVERAGE_REPORTER_ANGULAR_PRESET, CoverageReporterConfig } from 'playwright-code-coverage';
+import { CoverageReporterConfig, defineCoverageReporterConfig } from 'playwright-code-coverage';
 
 export function createPlaywrightConfig(
   serveCommand: string,
@@ -29,12 +29,11 @@ export function createPlaywrightConfig(
       ['list'],
       [
         '../../../libs/playwright-code-coverage/src/coverage-reporter.ts',
-        {
-          ...COVERAGE_REPORTER_ANGULAR_PRESET,
-          ...config,
+        defineCoverageReporterConfig({
           projectRoot: workspaceRoot,
           debug: true,
-        },
+          ...config,
+        }),
       ],
     ],
   });

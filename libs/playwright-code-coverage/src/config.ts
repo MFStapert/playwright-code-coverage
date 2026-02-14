@@ -5,16 +5,30 @@ export type CoverageReporterConfig = {
   outputDir: string;
   baseURL: string;
   bundleLocation: string;
-  includePatterns: Array<string>;
-  excludePatterns: Array<string>;
-  reporters: Array<ReportType>;
+  includePatterns: string[];
+  excludePatterns: string[];
+  reporters: ReportType[];
   debug?: boolean;
 };
 
-export const COVERAGE_REPORTER_ANGULAR_PRESET: Partial<CoverageReporterConfig> = {
+export const COVERAGE_REPORTER_DEFAULTS = {
   outputDir: 'coverage/playwright-code-coverage',
-  baseURL: 'http://localhost:4200',
-  includePatterns: ['**/*.ts'],
-  excludePatterns: [],
-  reporters: ['lcov'],
+  reporters: ['lcov'] as ReportType[],
+  baseUrl: 'http://localhost:4200',
+  includePatterns: ['**/*.ts', '**/*.tsx'],
+};
+
+export const defineCoverageReporterConfig = (
+  config: Partial<CoverageReporterConfig>,
+): CoverageReporterConfig => {
+  return {
+    projectRoot: config.projectRoot ?? '',
+    outputDir: config.outputDir ?? COVERAGE_REPORTER_DEFAULTS.outputDir,
+    baseURL: config.baseURL ?? COVERAGE_REPORTER_DEFAULTS.baseUrl,
+    reporters: config.reporters ?? COVERAGE_REPORTER_DEFAULTS.reporters,
+    bundleLocation: config.bundleLocation ?? '',
+    includePatterns: config.includePatterns ?? COVERAGE_REPORTER_DEFAULTS.includePatterns,
+    excludePatterns: config.excludePatterns ?? [],
+    debug: config.debug ?? false,
+  };
 };
