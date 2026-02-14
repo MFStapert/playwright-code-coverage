@@ -6,9 +6,9 @@ import { unmarshallCoverage } from './utils/attachment.utils';
 import {
   filterCoverageMap,
   generateReports,
-  mapReportsToMapData,
   postProcessIstanbulCoverMap,
-} from './utils/coverage-report.utils';
+} from './utils/coverage-map.utils';
+import { mapReportsToMapData } from './utils/coverage-report.utils';
 
 export class CoverageReporter implements Reporter {
   readonly #coverageMap = libCoverage.createCoverageMap();
