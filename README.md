@@ -1,82 +1,52 @@
-# PlaywrightCoverageReporter
+# Playwright Code coverage
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+Monorepo for `playwright code coverage` a reporter library for generating code coverage reports.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Library usage
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+For info on the library view the [this README.](./libs/playwright-code-coverage/README.md)
 
-## Finish your CI setup
+## How this library works
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/XSNrtNJWYC)
+Playwright can generate code coverage reports for chromium based browsers.
+There are 3 main issues preventing this from being an out of the box solution:
 
+- Coverage reports aren't aggregated across multiple runs.
+- Code coverage reports are in v8 format which is not supported by most code coverage tools.
+- You can't directly map the generated v8 coverage to the original source code.
 
-## Run tasks
+This library aims to solve these issues:
 
-To run the dev server for your app, use:
+### Aggregating the coverage across multiple runs.
 
-```sh
-npx nx serve playwright-coverage-reporter
-```
+This library uses a playwright reporter to store coverage data in memory using the `istanbul-lib-coverage` coverageMap.
+To pass data to this reporter, we use the testInfo property to attach the v8CoverageReport as a file.
+The reporter then converts the coverage and merges it with the existing coverageMap.
 
-To create a production bundle:
+### Converting the v8 coverage to istanbul coverage format
 
-```sh
-npx nx build playwright-coverage-reporter
-```
+This library uses the `v8toIstanbul` library to convert the v8 coverage to istanbul coverage format.
+Some filtering is applied beforehand, like remote urls and certain framework urls being exluded.
+There are some quirks when dealing with `v8toIstanbul`; since this library tries to resolve sourcemaps when called.
+Certain dev servers like angular generate inline sourcemaps which dont need to be resolved.
+But when bundling the app and serving it statically, you need to re-write the script paths to point to the original source files.
 
-To see all available targets to run for a project, run:
+### Mapping the generated istanbul coverage to the original source code.
 
-```sh
-npx nx show project playwright-coverage-reporter
-```
+The coverage playwright receives references locations like `localhost:xxxx/src/index.ts` which can't be mapped to the original source code.
+Mapping this is dependent on project structure, currently this only works for angular projects in regular and monorepo setups.
+I've tried cleaning up the input for the `v8toIstanbul` library, hoping it would result in correct mappings.
+But there are to many edge cases to cover, it's easier to just map the coverage manually.
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## Using this repo
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This repo contains the code for the library in the `libs` folder and `apps` for testing.
+In the `apps` folder there are multiple frontend projects to test the library against, also a playwright project to run the library against the frontend projects.
+There is a verdacio app for locally publishing the library.
+Currently, the library only has an e2e test; `npm run test` will tun the library against all tested frontend projects and compare generated coverage.
 
-## Add new projects
+## Resources
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/angular:app demo
-```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/angular:lib mylib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- [Playwright code coverage](https://playwright.dev/docs/api/class-coverage)
+- [Playwright reporters](https://playwright.dev/docs/test-reporters)
+- [similar lib by bgotink](https://github.com/bgotink/playwright-coverage)
