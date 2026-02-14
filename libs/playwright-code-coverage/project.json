@@ -11,7 +11,7 @@
   "targets": {
     "nx-release-publish": {
       "options": {
-        "packageRoot": "/dist/libs/playwright-code-coverage"
+        "packageRoot": "dist/libs/playwright-code-coverage"
       }
     }
   }
