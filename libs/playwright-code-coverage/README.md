@@ -4,9 +4,9 @@ Generate istanbul code coverage reports for Playwright tests.
 
 ## Prerequisites
 
-- Playwright >= 1.40.0
-- Ensure sourcemaps are enabled for dev server/bundle
-- Run tests with a chromium-based browser
+- Playwright version >= 1.40.0
+- Sourcemaps enabled for dev server/bundle
+- Tests are rand with a chromium-based browser
 
 ## Usage
 

@@ -7,11 +7,11 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "prepare": "npx playwright install",
     "clean": "rm -rf .angular .nx coverage dist node_modules tmp",
     "lint": "nx run-many --target=lint --all --parallel --outputStyle=static",
     "build": "nx run-many --target=build --all --parallel --outputStyle=static",
     "test": "node test.js",
+    "prerelease": "nx run playwright-code-coverage:build",
     "release": "nx release publish"
   },
   "dependencies": {
