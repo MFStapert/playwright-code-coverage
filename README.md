@@ -45,6 +45,11 @@ In the `apps` folder there are multiple frontend projects to test the library ag
 There is a verdacio app for locally publishing the library.
 Currently, the library only has an e2e test; `npm run test` will tun the library against all tested frontend projects and compare generated coverage.
 
+## TODOS
+
+- Add unit test setup
+- Add additional frameworks for testing
+
 ## Resources used
 
 - [Playwright code coverage](https://playwright.dev/docs/api/class-coverage)
