@@ -1,11 +1,9 @@
 name: Release
 
-#on:
-#  push:
-#    branches:
-#      - main
-
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types:
       - opened
@@ -30,7 +28,10 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
-      - run: npm ci
-      - run: npm run build
-#      - run: npm run test
+
+      # currently needed to get npm to work with OIDC
+      - run: npm install -g npm@latest
+      - run: npm ci --ignore-scripts
       - run: npm run release
+        env:
+          NPM_CONFIG_PROVENANCE: true

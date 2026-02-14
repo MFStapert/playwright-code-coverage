@@ -47,6 +47,9 @@ Currently, the library only has an e2e test; `npm run test` will tun the library
 
 ## Todos
 
+- Commit lint
+- github releases
+- Check format in ci
 - Dependabot config
 - Add unit test setup
 - Add additional frameworks for testing
