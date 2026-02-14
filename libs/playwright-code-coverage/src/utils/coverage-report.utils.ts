@@ -23,7 +23,7 @@ const mapCoverageReportToScriptPath = (
   if (config.bundleLocation) {
     const urlObj = new URL(coverageReport.url);
     const { pathname } = urlObj;
-    return join(`${config.projectRoot}/${config.bundleLocation}`, pathname);
+    return join(`${config.workspaceRoot}/${config.bundleLocation}`, pathname);
   } else {
     return coverageReport.url;
   }

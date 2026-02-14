@@ -1,7 +1,7 @@
 import { ReportType } from 'istanbul-reports';
 
 export type CoverageReporterConfig = {
-  projectRoot: string;
+  workspaceRoot: string;
   outputDir: string;
   baseURL: string;
   bundleLocation: string;
@@ -22,7 +22,7 @@ export const defineCoverageReporterConfig = (
   config: Partial<CoverageReporterConfig>,
 ): CoverageReporterConfig => {
   return {
-    projectRoot: config.projectRoot ?? '',
+    workspaceRoot: config.workspaceRoot ?? '',
     outputDir: config.outputDir ?? COVERAGE_REPORTER_DEFAULTS.outputDir,
     baseURL: config.baseURL ?? COVERAGE_REPORTER_DEFAULTS.baseUrl,
     reporters: config.reporters ?? COVERAGE_REPORTER_DEFAULTS.reporters,

@@ -53,13 +53,13 @@ export const filterCoverageMap = (
 
 export const generateReports = (coverageMap: CoverageMap, config: CoverageReporterConfig): void => {
   const context = libReport.createContext({
-    dir: `${config.projectRoot}/${config.outputDir}`,
+    dir: `${config.workspaceRoot}/${config.outputDir}`,
     coverageMap,
   });
 
   config.reporters.forEach(reportType => {
     const report = reports.create(reportType, {
-      projectRoot: config.projectRoot,
+      projectRoot: config.workspaceRoot,
     });
 
     report.execute(context);

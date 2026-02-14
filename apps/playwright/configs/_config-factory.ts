@@ -30,7 +30,7 @@ export function createPlaywrightConfig(
       [
         '../../../libs/playwright-code-coverage/src/coverage-reporter.ts',
         defineCoverageReporterConfig({
-          projectRoot: workspaceRoot,
+          workspaceRoot: workspaceRoot,
           debug: true,
           ...config,
         }),

@@ -18,11 +18,8 @@ export class CoverageReporter implements Reporter {
     if (!options) {
       throw new Error('No configuration provided for coverage reporter');
     }
-    if (!options.projectRoot) {
+    if (!options.workspaceRoot) {
       throw new Error('No project root provided for coverage reporter');
-    }
-    if (!options.baseURL) {
-      throw new Error('No base URL provided for coverage reporter');
     }
     if (!options.includePatterns || !options.includePatterns.length) {
       throw new Error('No include patterns provided for coverage reporter');
@@ -36,7 +33,7 @@ export class CoverageReporter implements Reporter {
 
   onBegin() {
     console.info('Starting coverage reporter...');
-    const outputDir = `${this.#config.projectRoot}/${this.#config.outputDir}`;
+    const outputDir = `${this.#config.workspaceRoot}/${this.#config.outputDir}`;
     if (existsSync(outputDir)) {
       rmSync(outputDir, { recursive: true, force: true });
     }
