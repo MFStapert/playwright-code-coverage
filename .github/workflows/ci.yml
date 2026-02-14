@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  main:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,10 +25,12 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
 
       - run: npm ci
+      - run: npx playwright install
       - run: npm run lint
       - run: npm run build
       - run: npm run test
