@@ -37,7 +37,7 @@ export default defineConfig({
 
 ### Instrument your tests:
 
-To enable code coverage for tests, you need to use the testWithCoverage fixture instead of the regular test fixture:
+To enable code coverage for tests, you need to use the `testWithCoverage` fixture instead of the regular `test` fixture:
 
 ```typescript
 import { expect } from '@playwright/test';
