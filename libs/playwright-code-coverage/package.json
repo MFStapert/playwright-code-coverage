@@ -1,6 +1,6 @@
 {
   "name": "playwright-code-coverage",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Reporter for generating istanbul coverage reports for playwright tests ",
   "license": "MIT",
   "keywords": [
